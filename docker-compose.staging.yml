@@ -1,0 +1,149 @@
+version: "3.7"
+services:
+  coordinator:
+    image: gpikra/coordinator:v7.0.2
+    command: python coordinator.py
+    ports:
+      - 12314:12314
+    environment:
+      - PLAYER_REPO_2=http://dl058.madgik.di.uoa.gr:7002
+      - PLAYER_REPO_1=http://dl058.madgik.di.uoa.gr:7001
+      - PLAYER_REPO_0=http://dl056.madgik.di.uoa.gr:7000
+      - DB_URL=dl056.madgik.di.uoa.gr:27017      
+      - REDIS_HOST=88.197.53.58
+      - REDIS_PORT=6379
+      - REDIS_PSWD=agora
+      - DB_UNAME=sysadmin
+      - DB_PSWD=123qwe
+    depends_on:
+      - redis
+      - database
+
+  redis:
+    image: "redis:alpine3.15"
+    command: redis-server --requirepass agora
+    ports:
+      - 6379:6379
+    environment:
+      - REDIS_REPLICATION_MODE=master
+
+  database:
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=sysadmin
+      - MONGO_INITDB_ROOT_PASSWORD=123qwe
+
+  client1:
+    image: gpikra/coordinator:v7.0.2
+    entrypoint: python client.py
+    environment:
+      - PLAYER_REPO_2=http://dl058.madgik.di.uoa.gr:7002
+      - PLAYER_REPO_1=http://dl058.madgik.di.uoa.gr:7001
+      - PLAYER_REPO_0=http://dl056.madgik.di.uoa.gr:7000
+      - COORDINATOR_URL=http://dl056.madgik.di.uoa.gr:12314
+      - ID=standardclient12345
+      - PORT=9000
+    ports:
+      - 9000:9000
+
+  client2:
+    image: gpikra/coordinator:v7.0.2
+    entrypoint: python client.py
+    environment:
+      - PLAYER_REPO_2=http://dl058.madgik.di.uoa.gr:7002
+      - PLAYER_REPO_1=http://dl058.madgik.di.uoa.gr:7001
+      - PLAYER_REPO_0=http://dl056.madgik.di.uoa.gr:7000
+      - COORDINATOR_URL=http://dl056.madgik.di.uoa.gr:12314
+      - ID=standardclient67890
+      - PORT=9001
+    ports:
+      - 9001:9001
+
+  client3:
+    image: gpikra/coordinator:v7.0.2
+    entrypoint: python client.py
+    environment:
+      - PLAYER_REPO_2=http://dl058.madgik.di.uoa.gr:7002
+      - PLAYER_REPO_1=http://dl058.madgik.di.uoa.gr:7001
+      - PLAYER_REPO_0=http://dl056.madgik.di.uoa.gr:7000
+      - COORDINATOR_URL=http://dl056.madgik.di.uoa.gr:12314
+      - ID=client3
+      - PORT=9002
+    ports:
+      - 9002:9002
+
+  client4:
+    image: gpikra/coordinator:v7.0.2
+    entrypoint: python client.py
+    environment:
+      - PLAYER_REPO_2=http://dl058.madgik.di.uoa.gr:7002
+      - PLAYER_REPO_1=http://dl058.madgik.di.uoa.gr:7001
+      - PLAYER_REPO_0=http://dl056.madgik.di.uoa.gr:7000
+      - COORDINATOR_URL=http://dl056.madgik.di.uoa.gr:12314
+      - ID=client4
+      - PORT=9003
+    ports:
+      - 9003:9003
+    
+  client5:
+    image: gpikra/coordinator:v7.0.2
+    entrypoint: python client.py
+    environment:
+      - PLAYER_REPO_2=http://dl058.madgik.di.uoa.gr:7002
+      - PLAYER_REPO_1=http://dl058.madgik.di.uoa.gr:7001
+      - PLAYER_REPO_0=http://dl056.madgik.di.uoa.gr:7000
+      - COORDINATOR_URL=http://dl056.madgik.di.uoa.gr:12314
+      - ID=client5
+      - PORT=9004
+    ports:
+      - 9004:9004
+
+  player1:
+    image: gpikra/coordinator:v7.0.2
+    entrypoint: python player.py 0
+    environment:
+      - PLAYER_REPO_2=http://dl058.madgik.di.uoa.gr:7002
+      - PLAYER_REPO_1=http://dl058.madgik.di.uoa.gr:7001
+      - PLAYER_REPO_0=http://dl056.madgik.di.uoa.gr:7000
+      - COORDINATOR_URL=http://dl056.madgik.di.uoa.gr:12314
+      - DB_URL=dl056.madgik.di.uoa.gr:27017
+      - DB_UNAME=sysadmin
+      - DB_PSWD=123qwe
+    ports:
+      - 6000:6000
+      - 7000:7000
+      - 14000:14000
+
+  player2:
+    image: gpikra/coordinator:v7.0.2
+    entrypoint: python player.py 1
+    environment:
+      - PLAYER_REPO_2=http://dl058.madgik.di.uoa.gr:7002
+      - PLAYER_REPO_1=http://dl058.madgik.di.uoa.gr:7001
+      - PLAYER_REPO_0=http://dl056.madgik.di.uoa.gr:7000
+      - COORDINATOR_URL=http://dl056.madgik.di.uoa.gr:12314
+      - DB_URL=dl056.madgik.di.uoa.gr:27017
+      - DB_UNAME=sysadmin
+      - DB_PSWD=123qwe
+    ports:
+      - 6001:6001
+      - 7001:7001
+      - 14001:14001
+
+  player3:
+    image: gpikra/coordinator:v7.0.2
+    entrypoint: python player.py 2
+    environment:
+      - PLAYER_REPO_2=http://dl058.madgik.di.uoa.gr:7002
+      - PLAYER_REPO_1=http://dl058.madgik.di.uoa.gr:7001
+      - PLAYER_REPO_0=http://dl056.madgik.di.uoa.gr:7000
+      - COORDINATOR_URL=http://dl056.madgik.di.uoa.gr:12314
+      - DB_URL=dl056.madgik.di.uoa.gr:27017
+      - DB_UNAME=sysadmin
+      - DB_PSWD=123qwe
+    ports:
+      - 6002:6002
+      - 7002:7002
+      - 14002:14002

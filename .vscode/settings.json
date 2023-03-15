@@ -1,0 +1,18 @@
+{
+  "files.associations": {
+    "ostream": "cpp",
+    "__locale": "cpp",
+    "array": "cpp",
+    "iterator": "cpp",
+    "string": "cpp",
+    "string_view": "cpp",
+    "vector": "cpp",
+    "utility": "cpp",
+    "iostream": "cpp",
+    "fstream": "cpp",
+    "xlocmes": "cpp"
+  },
+  "editor.formatOnSave": true,
+  "python.linting.pylintEnabled": true,
+  "python.languageServer": "Default"
+}

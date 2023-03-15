@@ -1,0 +1,148 @@
+version: "3.7"
+services:
+  coordinator:
+    image: gpikra/coordinator:v7.0.6.8
+    command: python coordinator.py
+    ports:
+      - 12314:12314
+    environment:
+      - PLAYER_REPO_2=http://172.17.0.1:7102
+      - PLAYER_REPO_1=http://172.17.0.1:7101
+      - PLAYER_REPO_0=http://172.17.0.1:7100
+      - DB_URL=172.17.0.1:27017
+      - REDIS_HOST=172.17.0.1
+      - REDIS_PORT=6379
+      - REDIS_PSWD=agora
+      - DB_UNAME=sysadmin
+      - DB_PSWD=123qwe
+
+    depends_on:
+      - redis
+      - database
+
+  redis:
+    image: "redis:alpine"
+    command: redis-server --requirepass agora
+    ports:
+      - 6379:6379
+    environment:
+      - REDIS_REPLICATION_MODE=master
+
+  database:
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=sysadmin
+      - MONGO_INITDB_ROOT_PASSWORD=123qwe
+
+  client1:
+    image: gpikra/coordinator:v7.0.6.8
+    entrypoint: python client.py
+    environment:
+      - PLAYER_REPO_2=http://172.17.0.1:7102
+      - PLAYER_REPO_1=http://172.17.0.1:7101
+      - PLAYER_REPO_0=http://172.17.0.1:7100
+      - COORDINATOR_URL=http://172.17.0.1:12314
+      - RSTUDIO_SERVER_URL=http://host.docker.internal:6003
+      - ID=ZuellingPharma
+      # - REMOTE_SERVICE_URL=http://172.17.0.1:21021
+      - PORT=9000
+    ports:
+      - 9000:9000
+
+  client2:
+    image: gpikra/coordinator:v7.0.6.8
+    entrypoint: python client.py
+    environment:
+      - PLAYER_REPO_2=http://172.17.0.1:7102
+      - PLAYER_REPO_1=http://172.17.0.1:7101
+      - PLAYER_REPO_0=http://172.17.0.1:7100
+      - COORDINATOR_URL=http://172.17.0.1:12314
+      - ID=ChildrensHospital
+      - REMOTE_SERVICE_URL=http://172.17.0.1:21021
+      - PORT=9001
+      - RSTUDIO_SERVER_URL=http://0.0.0.0:6003
+    ports:
+      - 9001:9001
+
+  client3:
+    image: gpikra/coordinator:v7.0.6.8
+    entrypoint: python client.py
+    environment:
+      - PLAYER_REPO_2=http://172.17.0.1:7102
+      - PLAYER_REPO_1=http://172.17.0.1:7101
+      - PLAYER_REPO_0=http://172.17.0.1:7100
+      - COORDINATOR_URL=http://172.17.0.1:12314
+      - REMOTE_SERVICE_URL=http://172.17.0.1:21021
+      - ID=WomenHealthClinica
+      - PORT=9002
+      - RSTUDIO_SERVER_URL=http://0.0.0.0:6003
+    ports:
+      - 9002:9002
+
+  client4:
+    image: gpikra/coordinator:v7.0.6.8
+    entrypoint: python client.py
+    environment:
+      - PLAYER_REPO_2=http://172.17.0.1:7102
+      - PLAYER_REPO_1=http://172.17.0.1:7101
+      - PLAYER_REPO_0=http://172.17.0.1:7100
+      - COORDINATOR_URL=http://172.17.0.1:12314
+      - REMOTE_SERVICE_URL=http://172.17.0.1:21021
+      - ID=CardiologyClinic
+      - PORT=9003
+      - RSTUDIO_SERVER_URL=http://0.0.0.0:6003
+    ports:
+      - 9003:9003
+
+  player1:
+    image: gpikra/coordinator:v7.0.6.8
+    entrypoint: python player.py 0
+    environment:
+      - PLAYER_REPO_2=http://172.17.0.1:7102
+      - PLAYER_REPO_1=http://172.17.0.1:7101
+      - PLAYER_REPO_0=http://172.17.0.1:7100
+      - DB_URL=172.17.0.1:27017
+      - COORDINATOR_URL=http://172.17.0.1:12314
+      - PORT=7100
+      - DB_UNAME=sysadmin
+      - DB_PSWD=123qwe
+    ports:
+      - 6000:6000
+      - 7100:7100
+      - 14000:14000
+
+  player2:
+    image: gpikra/coordinator:v7.0.6.8
+    entrypoint: python player.py 1
+    environment:
+      - PLAYER_REPO_2=http://172.17.0.1:7102
+      - PLAYER_REPO_1=http://172.17.0.1:7101
+      - PLAYER_REPO_0=http://172.17.0.1:7100
+      - DB_URL=172.17.0.1:27017
+      - COORDINATOR_URL=http://172.17.0.1:12314
+      - PORT=7100
+      - DB_UNAME=sysadmin
+      - DB_PSWD=123qwe
+    ports:
+      - 6001:6001
+      - 7101:7101
+      - 14001:14001
+
+  player3:
+    image: gpikra/coordinator:v7.0.6.8
+    entrypoint: python player.py 2
+    environment:
+      - PLAYER_REPO_2=http://172.17.0.1:7102
+      - PLAYER_REPO_1=http://172.17.0.1:7101
+      - PLAYER_REPO_0=http://172.17.0.1:7100
+      - DB_URL=172.17.0.1:27017
+      - COORDINATOR_URL=http://172.17.0.1:12314
+      - DB_UNAME=sysadmin
+      - PORT=7100
+      - DB_PSWD=123qwe
+    ports:
+      - 6002:6002
+      - 7102:7102
+      - 14002:14002

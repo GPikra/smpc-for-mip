@@ -1,0 +1,8 @@
+0 88.197.53.56 Player0.crt P0
+1 88.197.53.57 Player1.crt P1
+2 88.197.53.58 Player2.crt P2
+
+
+0 localhost Player0.crt P0
+1 localhost Player1.crt P1
+2 localhost Player2.crt P2

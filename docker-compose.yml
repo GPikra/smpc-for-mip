@@ -1,0 +1,88 @@
+version: "3.7"
+services:
+  # scale:
+  #   container_name: scale_mamba
+  #   build:
+  #     context: .
+  #     network: host
+
+  # coordinator_bash:
+  #   image: gpikra/scalemamba:v1
+  redis:
+    image: "redis:alpine"
+    command: redis-server --requirepass agora
+    ports:
+      - "6379:6379"
+    volumes:
+      - $PWD/redis-data:/var/lib/redis
+      - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_REPLICATION_MODE=master
+
+  database:
+    image: gpikra/mongodb
+    container_name: agoradb_c
+    environment:
+      - MONGO_INITDB_DATABASE=agoradb
+      - MONGO_INITDB_ROOT_USERNAME=sysadmin
+      - MONGO_INITDB_ROOT_PASSWORD=123qwe
+    ports:
+      - 27017:27017
+      - 27018:27018
+      - 27019:27019
+
+  coordinator:
+    command: python coordinator.py
+    working_dir: /SCALE-MAMBA
+    env_file:
+      - ./.env.dev
+    ports:
+      - 12314:12314
+    build:
+      context: .
+      network: host
+    volumes:
+      - ./requirements.txt:/SCALE-MAMBA/requirements.txt
+      - ./python_web:/SCALE-MAMBA/python_web
+      - ./returns:/SCALE-MAMBA/returns
+
+  player:
+    image: gpikra/scalemamba:v1
+    entrypoint: python player.py
+    network_mode: host
+    working_dir: /SCALE-MAMBA
+    env_file:
+      - ./.env.dev
+    build:
+      context: .
+      network: host
+    volumes:
+      - ./Cert-Store:/SCALE-MAMBA/Cert-Store
+      - ./Data:/SCALE-MAMBA/Data
+      - ./returns:/SCALE-MAMBA/returns
+      - ./python_web:/SCALE-MAMBA/python_web
+
+  client:
+    image: gpikra/scalemamba:v1
+    entrypoint: python client.py
+    network_mode: host
+    working_dir: /SCALE-MAMBA
+    env_file:
+      - ./.env.dev
+    build:
+      context: .
+      network: host
+    volumes:
+      - ./returns:/SCALE-MAMBA/returns
+      - ./dataset:/SCALE-MAMBA/dataset
+      - ./python_web:/SCALE-MAMBA/python_web
+
+  mockResearcher:
+    image: gpikra/scalemamba:v1
+    entrypoint: python mock_researcher.py
+    network_mode: host
+    working_dir: /SCALE-MAMBA
+    volumes:
+      - ./returns:/SCALE-MAMBA/returns
+      - ./dataset:/SCALE-MAMBA/dataset
+      - ./mock_researcher.py:/SCALE-MAMBA/mock_researcher.py

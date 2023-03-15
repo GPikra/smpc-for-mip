@@ -1,0 +1,123 @@
+version: "3.7"
+services:
+  coordinator:
+    image: gpikra/coordinator:v7.0.3
+    command: python coordinator.py
+    ports:
+      - 12314:12314
+    environment:
+      - PLAYER_REPO_2=http://172.17.0.1:8002
+      - PLAYER_REPO_1=http://172.17.0.1:8001
+      - PLAYER_REPO_0=http://172.17.0.1:8000
+      - DB_URL=172.17.0.1:27017
+      - REDIS_HOST=172.17.0.1
+      - REDIS_PORT=6379
+      - REDIS_PSWD=agora
+      - DB_UNAME=sysadmin
+      - DB_PSWD=123qwe
+    depends_on:
+      - redis
+      - database
+
+  redis:
+    image: "redis:alpine"
+    command: redis-server --requirepass agora
+    ports:
+      - 6379:6379
+    environment:
+      - REDIS_REPLICATION_MODE=master
+
+  database:
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=sysadmin
+      - MONGO_INITDB_ROOT_PASSWORD=123qwe
+
+  client1:
+    image: gpikra/coordinator:v7.0.3
+    entrypoint: python client.py
+    environment:
+      - PLAYER_REPO_2=http://172.17.0.1:8002
+      - PLAYER_REPO_1=http://172.17.0.1:8001
+      - PLAYER_REPO_0=http://172.17.0.1:8000
+      - COORDINATOR_URL=http://172.17.0.1:12314
+      - ID=standardclient12345
+      - PORT=9000
+    ports:
+      - 9000:9000
+
+  client2:
+    image: gpikra/coordinator:v7.0.3
+    entrypoint: python client.py
+    environment:
+      - PLAYER_REPO_2=http://172.17.0.1:8002
+      - PLAYER_REPO_1=http://172.17.0.1:8001
+      - PLAYER_REPO_0=http://172.17.0.1:8000
+      - COORDINATOR_URL=http://172.17.0.1:12314
+      - ID=standardclient67890
+      - PORT=9001
+    ports:
+      - 9001:9001
+
+  client3:
+    image: gpikra/coordinator:v7.0.3
+    entrypoint: python client.py
+    environment:
+      - PLAYER_REPO_2=http://172.17.0.1:8002
+      - PLAYER_REPO_1=http://172.17.0.1:8001
+      - PLAYER_REPO_0=http://172.17.0.1:8000
+      - COORDINATOR_URL=http://172.17.0.1:12314
+      - ID=client3
+      - PORT=9002
+    ports:
+      - 9002:9002
+
+  player1:
+    image: gpikra/coordinator:v7.0.3
+    entrypoint: python player.py 0
+    environment:
+      - PLAYER_REPO_2=http://172.17.0.1:8002
+      - PLAYER_REPO_1=http://172.17.0.1:8001
+      - PLAYER_REPO_0=http://172.17.0.1:8000
+      - DB_URL=172.17.0.1:27017
+      - COORDINATOR_URL=http://172.17.0.1:12314
+      - DB_UNAME=sysadmin
+      - DB_PSWD=123qwe
+    ports:
+      - 6000:6000
+      - 8000:8000
+      - 14000:14000
+
+  player2:
+    image: gpikra/coordinator:v7.0.3
+    entrypoint: python player.py 1
+    environment:
+      - PLAYER_REPO_2=http://172.17.0.1:8002
+      - PLAYER_REPO_1=http://172.17.0.1:8001
+      - PLAYER_REPO_0=http://172.17.0.1:8000
+      - DB_URL=172.17.0.1:27017
+      - COORDINATOR_URL=http://172.17.0.1:12314
+      - DB_UNAME=sysadmin
+      - DB_PSWD=123qwe
+    ports:
+      - 6001:6001
+      - 8001:8001
+      - 14001:14001
+
+  player3:
+    image: gpikra/coordinator:v7.0.3
+    entrypoint: python player.py 2
+    environment:
+      - PLAYER_REPO_2=http://172.17.0.1:8002
+      - PLAYER_REPO_1=http://172.17.0.1:8001
+      - PLAYER_REPO_0=http://172.17.0.1:8000
+      - DB_URL=172.17.0.1:27017
+      - COORDINATOR_URL=http://172.17.0.1:12314
+      - DB_UNAME=sysadmin
+      - DB_PSWD=123qwe
+    ports:
+      - 6002:6002
+      - 8002:8002
+      - 14002:14002

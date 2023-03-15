@@ -1,0 +1,74 @@
+version: "3.7"
+services:
+  coordinator:
+    image: gpikra/coordinator
+    command: python coordinator.py
+    working_dir: /SCALE-MAMBA
+    ports:
+      - 12314:12314
+    env_file:
+      - ./.env.dev
+    build:
+      context: .
+      network: host
+
+  redis:
+    image: "redis:alpine"
+    command: redis-server --requirepass agora
+    ports:
+      - "6379:6379"
+    volumes:
+      - $PWD/redis-data:/var/lib/redis
+      - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_REPLICATION_MODE=master
+
+  database:
+    image: mongo
+    container_name: agoradb_c
+    environment:
+      - MONGO_INITDB_DATABASE=agoradb
+      - MONGO_INITDB_ROOT_USERNAME=sysadmin
+      - MONGO_INITDB_ROOT_PASSWORD=123qwe
+    volumes:
+      - ./mongoDb/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./mongoDb/mongo-volume:/data/db
+    ports:
+      - 27017:27017
+      - 27018:27018
+      - 27019:27019
+
+  player:
+    image: gpikra/coordinator
+    entrypoint: python player.py
+    # ports:
+    #  - 7100:7100
+    #  - "7101:7101"
+    #  - "7102:7102"
+    #  - "5000:5000"
+    #  - "5001:5001"
+    #  - "5002:5002"
+    working_dir: /SCALE-MAMBA
+    env_file:
+      - ./.env.dev
+    build:
+      context: .
+      network: host
+    # volumes:
+    #   - ./returns:/SCALE-MAMBA/returns
+    #   - ./python_web:/SCALE-MAMBA/python_web
+
+  client:
+    image: gpikra/coordinator
+    entrypoint: python client.py
+    network_mode: host
+    working_dir: /SCALE-MAMBA
+    env_file:
+      - ./.env.dev
+    build:
+      context: .
+      network: host
+    # volumes:
+    #   - ./returns:/SCALE-MAMBA/returns
+    #   - ./dataset:/SCALE-MAMBA/dataset
+    #   - ./python_web:/SCALE-MAMBA/python_web
