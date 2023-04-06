@@ -4,7 +4,7 @@ This repository extends the [SCALE-MAMBA](https://github.com/KULeuven-COSIC/SCAL
 
 ## Acknowledgements
 
-The work in this project was supported by ["Athena" RC](https://www.athena-innovation.gr/en) and partially supported by the [European Union’s Horizon 2020](https://ec.europa.eu/programmes/horizon2020/en/) research and innovation programme under grant agreement No. 732907 (["My Health, My Data"](http://www.myhealthmydata.eu/why-mhmd/) and grant agreement No. \_\_ ["Human Brain Project"]).
+The work in this project was supported by ["Athena" RC](https://www.athena-innovation.gr/en) and partially supported by the [European Union’s Horizon 2020](https://ec.europa.eu/programmes/horizon2020/en/) research and innovation programme under grant agreement No. 732907 (["My Health, My Data"](http://www.myhealthmydata.eu/why-mhmd/)) and this research was also supported by the EBRAINS research infrastructure, funded from the European Union’s Horizon 2020 Framework Programme for Research and Innovation under the Specific Grant Agreement No. 945539 (Human Brain Project SGA3)
 
 ## Components
 
@@ -17,7 +17,3 @@ The system can be analysed in three main components: coordinator, SMPC node and 
 ## Run
 
 docker-compose -f docker-compose.win.yml up
-
-## License
-
-MIT License as described in LICENSE file
