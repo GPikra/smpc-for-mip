@@ -37,7 +37,7 @@ With example body,
 ```
 
 
-The “dp” optional attribute controls the differential privacy parameters. These are `c` for the L2 sensitivity of the underlying computation and `e` for the privacy budget `ε`. 
+The `dp` optional attribute controls the differential privacy parameters. These are `c` for the L2 sensitivity of the underlying computation and `e` for the privacy budget `ε`. 
 
 In general, `e>0`  is a free parameter controlling the privacy budget in the sense of differential privacy. A lower value of e will result in more noise being added to the computation and hence a higher privacy guarantee (though with lower utility). 
 
@@ -46,7 +46,7 @@ The parameter `c` should be computed based on the underlying computation. For ex
 The SMPC engine implements the Laplacian mechanism, adding to the computed result a sample from the `Lap(0, c/e)` distribution. Note that the variance of the noise scales with `c/e`. 
 This provides a differential privacy guarantee of `ε=e`. 
 
-The dp attribute takes additional optional parameters `cs`, `es` which allows one to pass arrays of `c` and `e` values which are applied to the result index wise. If the result has a higher dimension than the given array, the last value of the array is used for the remainder of the values. If the array has a higher dimension the redundant values are ignored. The arrays `cs` and `es` must have equal length.
+The `dp` attribute takes additional optional parameters `cs`, `es` which allows one to pass arrays of `c` and `e` values which are applied to the result index wise. If the result has a higher dimension than the given array, the last value of the array is used for the remainder of the values. If the array has a higher dimension the redundant values are ignored. The arrays `cs` and `es` must have equal length.
 
 
 ## Run
