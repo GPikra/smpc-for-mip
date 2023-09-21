@@ -8,7 +8,7 @@ The work in this project was supported by ["Athena" RC](https://www.athena-innov
 
 ## Components
 
-SMPC is a cryptographic primitive where a set of computing nodes perform a computation of some function f over their private set of inputs revealing nothing but the output of the function f. SMPC can play a crucial role for the security and integrity in federated dataset processing especially when combined with differential privacy techniques to ensure data privacy. This is because SMPC allows computations on data in an encrypted form. It enables a group to compute large-scale aggregates or other properties of their distributed data without the need for a trusted third-party to collect said data. When combined with differential privacy it can ensure global differential privacy level utility guarantees with the same privacy guarantees as local differential privacy.
+SMPC is a cryptographic primitive where a set of computing nodes perform a computation of some function f over their private set of inputs revealing nothing but the output of the function `f`. SMPC can play a crucial role for the security and integrity in federated dataset processing especially when combined with differential privacy techniques to ensure data privacy. This is because SMPC allows computations on data in an encrypted form. It enables a group to compute large-scale aggregates or other properties of their distributed data without the need for a trusted third-party to collect said data. When combined with differential privacy it can ensure global differential privacy level utility guarantees with the same privacy guarantees as local differential privacy.
 
 The SMPC engine has been developed on top of the open source SCALE-MAMBA software [1] and additional functionalities have been built to support secure importation of data. Our software runs the SPDZ protocol [2] which allows us to speed up computation times by running a lot of the required SMPC computations in an “offline” phase before an actual request is made to the system. MPC computations are implemented in the MAMBA programming language and support different aggregation operations including sum, multiplication, min/max operation and disjoint union. The engine supports input of up to 9 decimal digits and is built to work with vectors of arbitrary length.
 
@@ -37,16 +37,16 @@ With example body,
 ```
 
 
-The “dp” optional attribute controls the differential privacy parameters. These are “c” for the L2 sensitivity of the underlying computation and “e” for the privacy budget ε. 
+The “dp” optional attribute controls the differential privacy parameters. These are `c` for the L2 sensitivity of the underlying computation and `e` for the privacy budget `ε`. 
 
-In general, e>0  is a free parameter controlling the privacy budget in the sense of differential privacy. A lower value of e will result in more noise being added to the computation and hence a higher privacy guarantee (though with lower utility). 
+In general, `e>0`  is a free parameter controlling the privacy budget in the sense of differential privacy. A lower value of e will result in more noise being added to the computation and hence a higher privacy guarantee (though with lower utility). 
 
-The parameter “c” should be computed based on the underlying computation. For example, for counting queries and in particular histograms, heatmaps etc, it is the case that c=1. For more complex queries the computation of “c” might not be very straightforward and we might need to resort to the clipping trick, whereby the values are clipped within an interval [-δ, δ] to enforce an upper bound on the sensitivity of c=2δ. In such cases δ should be chosen independently of the data and in a way that best approximates the actual range of values that the underlying variable takes.
+The parameter `c` should be computed based on the underlying computation. For example, for counting queries and in particular histograms, heatmaps etc, it is the case that `c=1`. For more complex queries the computation of `c` might not be very straightforward and we might need to resort to the clipping trick, whereby the values are clipped within an interval `[-δ, δ]` to enforce an upper bound on the sensitivity of `c=2δ`. In such cases `δ` should be chosen independently of the data and in a way that best approximates the actual range of values that the underlying variable takes.
 
-The SMPC engine implements the Laplacian mechanism, adding to the computed result a sample from the Lap(0, c/e) distribution. Note that the variance of the noise scales with c/e. 
+The SMPC engine implements the Laplacian mechanism, adding to the computed result a sample from the `Lap(0, c/e)` distribution. Note that the variance of the noise scales with `c/e`. 
 This provides a differential privacy guarantee of ε=e. 
 
-The dp attribute takes additional optional parameters cs,es which allows one to pass arrays of c and e values which are applied to the result index wise. If the result has a higher dimension than the given array, the last value of the array is used for the remainder of the values. If the array has a higher dimension the redundant values are ignored. The arrays cs and es must have equal length.
+The dp attribute takes additional optional parameters cs,es which allows one to pass arrays of `c` and `e` values which are applied to the result index wise. If the result has a higher dimension than the given array, the last value of the array is used for the remainder of the values. If the array has a higher dimension the redundant values are ignored. The arrays cs and es must have equal length.
 
 
 ## Run
