@@ -44,9 +44,9 @@ In general, `e>0`  is a free parameter controlling the privacy budget in the sen
 The parameter `c` should be computed based on the underlying computation. For example, for counting queries and in particular histograms, heatmaps etc, it is the case that `c=1`. For more complex queries the computation of `c` might not be very straightforward and we might need to resort to the clipping trick, whereby the values are clipped within an interval `[-δ, δ]` to enforce an upper bound on the sensitivity of `c=2δ`. In such cases `δ` should be chosen independently of the data and in a way that best approximates the actual range of values that the underlying variable takes.
 
 The SMPC engine implements the Laplacian mechanism, adding to the computed result a sample from the `Lap(0, c/e)` distribution. Note that the variance of the noise scales with `c/e`. 
-This provides a differential privacy guarantee of ε=e. 
+This provides a differential privacy guarantee of `ε=e`. 
 
-The dp attribute takes additional optional parameters cs,es which allows one to pass arrays of `c` and `e` values which are applied to the result index wise. If the result has a higher dimension than the given array, the last value of the array is used for the remainder of the values. If the array has a higher dimension the redundant values are ignored. The arrays cs and es must have equal length.
+The dp attribute takes additional optional parameters `cs`, `es` which allows one to pass arrays of `c` and `e` values which are applied to the result index wise. If the result has a higher dimension than the given array, the last value of the array is used for the remainder of the values. If the array has a higher dimension the redundant values are ignored. The arrays `cs` and `es` must have equal length.
 
 
 ## Run
