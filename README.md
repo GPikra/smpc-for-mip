@@ -22,6 +22,7 @@ The following document serves as a basic guide for the use of differential priva
 http://{{coordinator}}:{{coordinator-port}}/api/secure-aggregation/job-id/{key}
 
 With example body,
+```
 {
     "computationType": "sum",
     "returnUrl": "http://localhost:4100",
@@ -31,6 +32,7 @@ With example body,
         "e": 1
     }
 }
+```
 
 
 The “dp” optional attribute controls the differential privacy parameters. These are “c” for the L2 sensitivity of the underlying computation and “e” for the privacy budget ε. 
