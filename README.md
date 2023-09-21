@@ -39,7 +39,7 @@ With example body,
 
 The `dp` optional attribute controls the differential privacy parameters. These are `c` for the L2 sensitivity of the underlying computation and `e` for the privacy budget `ε`. 
 
-In general, `e>0`  is a free parameter controlling the privacy budget in the sense of differential privacy. A lower value of e will result in more noise being added to the computation and hence a higher privacy guarantee (though with lower utility). 
+In general, `e>0`  is a free parameter controlling the privacy budget in the sense of differential privacy. A lower value of `e` will result in more noise being added to the computation and hence a higher privacy guarantee (though with lower utility). 
 
 The parameter `c` should be computed based on the underlying computation. For example, for counting queries and in particular histograms, heatmaps etc, it is the case that `c=1`. For more complex queries the computation of `c` might not be very straightforward and we might need to resort to the clipping trick, whereby the values are clipped within an interval `[-δ, δ]` to enforce an upper bound on the sensitivity of `c=2δ`. In such cases `δ` should be chosen independently of the data and in a way that best approximates the actual range of values that the underlying variable takes.
 
