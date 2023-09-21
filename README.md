@@ -19,7 +19,9 @@ The system can be analysed in three main components: coordinator, SMPC node and 
 
 The following document serves as a basic guide for the use of differential privacy with the MIP SMPC engine. When triggering a computation request through the endpoint 
 
+```
 http://{{coordinator}}:{{coordinator-port}}/api/secure-aggregation/job-id/{key}
+```
 
 With example body,
 ```
